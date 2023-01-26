@@ -1,16 +1,23 @@
 import express from "express";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 import cors from "cors";
+import connectDB from "./db/db.js";
+
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 4500;
+const DB_URL = process.env.DB_URL;
 
+//CORS policy
 app.use(cors());
-4;
+//DATABASE connection
+connectDB(DB_URL);
+//json load
+app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(201).json("Server Started");
-});
+//loads json
+app.use(express.json());
 app.listen(PORT, () => {
   console.log(`Server is on PORT http://localhost:${PORT}`);
 });
