@@ -11,10 +11,11 @@ const Spinner = () => {
         justifyContent: "center",
         alignItems: "center",
         height: "40vh",
+        flexDirection: "column",
       }}
     >
       <CircularProgress />
-      <Typography color="#1e2d39" mx={2}>
+      <Typography color="#1e2d39" mx={2} mb={2}>
         Loading....
       </Typography>
     </Box>

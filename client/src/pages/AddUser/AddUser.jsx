@@ -18,11 +18,16 @@ import SendIcon from "@mui/icons-material/Send";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../../components/Spinner/Spinner";
+import { registerUser } from "../../services/Apis";
+import { useNavigate } from "react-router-dom";
+
 const AddUser = () => {
   const [showSpinner, setShowSpinner] = useState(true);
   const [error, setError] = useState(false);
   const [status, setStatus] = useState("");
   const [preview, setPreview] = useState("");
+  const [image, setImage] = useState("");
+  const navigate = useNavigate();
   const [user, setUser] = useState({
     fname: "",
     lname: "",
@@ -32,8 +37,6 @@ const AddUser = () => {
     status: "Active",
     location: "",
   });
-  let message;
-  const [image, setImage] = useState("");
   const handleChange = (event) => {
     setUser({
       ...user,
@@ -41,7 +44,7 @@ const AddUser = () => {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const { fname, lname, email, mobile, gender, status, location } = user;
     if (fname === "") {
@@ -75,8 +78,48 @@ const AddUser = () => {
       setError(true);
       toast.error("Image is required");
     } else {
-      toast.success("User Added Successfully!");
-      console.log("image:", preview);
+      const data = new FormData();
+      data.append("fname", fname);
+      data.append("lname", lname);
+      data.append("email", email);
+      data.append("mobile", mobile);
+      data.append("gender", gender);
+      data.append("status", status);
+      data.append("user_profile", image);
+      data.append("location", location);
+
+      if (data) {
+        const config = {
+          "Content-Type": "multipart/form-data",
+        };
+
+        //adding data to the database
+        const response = await registerUser(data, config);
+        console.log("response ", response);
+        console.log("data", data);
+
+        if (response.statusCode === 201) {
+          setUser({
+            ...user,
+            fname: "",
+            lname: "",
+            email: "",
+            mobile: "",
+            gender: "",
+            status: "Active",
+            location: "",
+          });
+          setStatus("");
+          setImage("");
+        } else {
+          toast.error("Something went wrong!");
+        }
+        toast.success("User Added Successfully!");
+
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
+      }
     }
 
     console.log("User", user);
@@ -95,12 +138,13 @@ const AddUser = () => {
     setTimeout(() => {
       setShowSpinner(false);
     }, 1200);
+    console.log(image);
   }, [showSpinner]);
   if (showSpinner) {
     return <Spinner />;
   } else {
     return (
-      <Container sx={{ my: 2 }}>
+      <Container sx={{ my: 4 }}>
         <Grid container>
           <Grid item xs={12} md={12}>
             <Box>
@@ -236,7 +280,7 @@ const AddUser = () => {
                             accept="image/*"
                             multiple
                             type="file"
-                            name="photo"
+                            name="user_profile"
                             onChange={setProfile}
                           />
                         </Button>
@@ -245,7 +289,11 @@ const AddUser = () => {
                           alt="profile"
                           height="70"
                           width="70"
-                          style={{ borderRadius: "100px" }}
+                          style={{
+                            borderRadius: "100px",
+                            boxShadow: "2px 2px 15px rgba(0,0,0,0.5)",
+                            border: "4px solid #1976d2",
+                          }}
                         />
                       </Box>
                     </Grid>

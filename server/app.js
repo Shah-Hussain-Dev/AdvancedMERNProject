@@ -16,8 +16,11 @@ connectDB(DB_URL);
 // load json
 app.use(express.json());
 
+//static files path
+app.use("/uploads", express.static("./uploads"));
+
 // routes
-app.use("/api/", routes);
+app.use(routes);
 
 //loads json
 app.use(express.json());

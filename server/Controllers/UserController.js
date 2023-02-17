@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import moment from "moment";
 const registerUser = async (req, res) => {
   const file = req.file.filename;
+  console.log(req.file);
   const { fname, lname, email, mobile, gender, status, location } = req.body;
 
   if (
@@ -47,6 +48,7 @@ const registerUser = async (req, res) => {
         data: userData,
         message: "User registered successfully",
       });
+      console.log("User registered successfully", userData);
     }
   } catch (err) {
     return res.status(400).json({
@@ -64,5 +66,23 @@ const getAllUsers = async (req, res) => {
     status: 200,
     data: allUsers,
   });
+  console.log("allUsers", allUsers);
 };
-export { registerUser, getAllUsers };
+
+const getSingleUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userModel.findOne({ _id: id });
+    return res.status(200).json({
+      status: 200,
+      data: user,
+    });
+  } catch (error) {
+    // return res.status(404).json({
+    //   status: 404,
+    //   message: error.message,
+    // });
+    console.log(error.message);
+  }
+};
+export { registerUser, getAllUsers, getSingleUser };

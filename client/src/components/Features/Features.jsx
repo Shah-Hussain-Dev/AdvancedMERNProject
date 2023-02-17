@@ -69,7 +69,6 @@ const Features = () => {
                       value="All"
                       control={
                         <Radio
-                          defaultChecked
                           sx={{
                             color: "#1976d2",
                             "&.Mui-checked": {
@@ -175,7 +174,6 @@ const Features = () => {
                         value="All"
                         control={
                           <Radio
-                            defaultChecked
                             sx={{
                               color: "#1976d2",
                               "&.Mui-checked": {

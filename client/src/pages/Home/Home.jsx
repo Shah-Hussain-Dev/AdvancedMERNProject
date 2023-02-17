@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid } from "@mui/material";
+import { Box, Button, Container, Grid, Typography } from "@mui/material";
 import React from "react";
 import { TbFileExport } from "react-icons/tb";
 import Features from "../../components/Features/Features";
@@ -24,8 +24,9 @@ const Home = () => {
     }, 1200);
   }, [showSpinner]);
   return (
-    <Container>
+    <Container sx={{ mt: 4, textAlign: "center" }}>
       {/*Filtering features*/}
+      <Typography variant="h3">User Management System</Typography>
       <Features />
       {/*User List  features*/}
 

@@ -58,11 +58,15 @@ export default function Header() {
     <Box
       sx={{
         flexGrow: 1,
-        
       }}
     >
-      <AppBar position="static" sx={{backgroundImage:
-          "linear-gradient( 84deg, rgba(32,201,255,1) 36.7%, rgba(0,8,187,1) 84.4%, rgba(255,255,255,1) 119.7% )",}}>
+      <AppBar
+        position="static"
+        sx={{
+          backgroundImage:
+            "linear-gradient( 84deg, rgba(32,201,255,1) 36.7%, rgba(0,8,187,1) 84.4%, rgba(255,255,255,1) 119.7% )",
+        }}
+      >
         <Toolbar>
           <IconButton
             size="large"
@@ -77,7 +81,6 @@ export default function Header() {
           <Typography
             variant="h6"
             noWrap
-            component="div"
             component={Link}
             to={"/"}
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
