@@ -178,56 +178,9 @@ export default function UserList() {
                           sx={{ color: "#DC0000" }}
                         />
                       </IconButton>
-                      {/* <MoreVertIcon /> */}
+                     
                     </IconButton>
-                    {/* <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        "aria-labelledby": "long-button",
-                      }}
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      elevation={2}
-                      PaperProps={{
-                        style: {
-                          boxShadow: "0",
-                        },
-                      }}
-                    >
-                      <MenuItem onClick={handleClose}>
-                        <IconButton
-                          aria-label="delete"
-                          component={Link}
-                          to={`/view-user/${user._id}`}
-                        >
-                          {userName}
-                          <VisibilityIcon
-                            size={24}
-                            ml={3}
-                            sx={{ color: "#FFB100" }}
-                          />
-                        </IconButton>
-                        <IconButton
-                          aria-label="edit"
-                          component={Link}
-                          to={`/update-user/${user._id}`}
-                        >
-                          <EditIcon
-                            size={24}
-                            ml={3}
-                            sx={{ color: "#03C988" }}
-                          />
-                        </IconButton>
-                        <IconButton aria-label="view">
-                          <DeleteIcon
-                            size={24}
-                            ml={3}
-                            sx={{ color: "#DC0000" }}
-                          />
-                        </IconButton>
-                      </MenuItem>
-                    </Menu> */}
+                  
                   </StyledTableCell>
                 </StyledTableRow>
               ))}

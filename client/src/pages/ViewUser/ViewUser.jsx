@@ -3,11 +3,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import {
-  CardActionArea,
-  Container,
-} from "@mui/material";
-import { FaUser } from "react-icons/fa";
+import { CardActionArea, Container } from "@mui/material";
+import { FaRegCalendarAlt, FaUser } from "react-icons/fa";
 import { MdCircle } from "react-icons/md";
 
 import { MdMarkEmailRead, MdMobileFriendly } from "react-icons/md";
@@ -19,6 +16,7 @@ import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { BASE_URL } from "../../services/helper";
 import { getSingleUser } from "../../services/Apis";
+import moment from "moment";
 function ViewUser() {
   const [showSpinner, setShowSpinner] = useState(true);
   const [user, setUser] = useState({});
@@ -27,7 +25,11 @@ function ViewUser() {
 
   const getSingleUserData = async () => {
     const response = await getSingleUser(id);
-    setUser(response.data);
+    if (response.status === 200) {
+      setUser(response.data);
+    } else {
+      console.log("No User found");
+    }
   };
   useEffect(() => {
     getSingleUserData();
@@ -53,16 +55,14 @@ function ViewUser() {
                   ? `${BASE_URL}/uploads/${user.data.user_profile}`
                   : "../images/avatar.png"
               }
-              alt="green iguana"
-              sx={{ objectFit: "cover" }}
+              alt="profile-card-image"
+              sx={{ objectFit: "cover", height: "min-content" }}
             />
 
             <CardContent
               sx={{
                 position: "relative",
                 backgroundColor: "rgba(32, 201, 255, 1)",
-                // backgroundImage:
-                //   "linear-gradient( 84deg, rgba(32,201,255,1) 36.7%, rgba(0,8,187,1) 84.4%, rgba(255,255,255,1) 119.7% )",
               }}
             >
               <Typography
@@ -72,7 +72,7 @@ function ViewUser() {
                 color="white"
                 fontWeight="bold"
               >
-                {/* {user.data.fname + user.data.lname} */}
+               
               </Typography>
               <Typography variant="h6" color="text.dark">
                 <MdMarkEmailRead size={20} /> Email : &nbsp; {user.data.email}
@@ -120,6 +120,21 @@ function ViewUser() {
                   {user.data.location}
                 </span>
               </Typography>
+
+              <Typography variant="h6" color="text.dark">
+                <FaRegCalendarAlt size={20} /> Date : &nbsp;
+                <span variant="h6" color="text.secondary">
+                  {moment(user.data.dateCreated).format("DD-MM-YYYY")}
+                </span>
+              </Typography>
+              {user.data.dateUpdated && (
+                <Typography variant="h6" color="text.dark">
+                  <FaRegCalendarAlt size={20} /> Date : &nbsp;
+                  <span variant="h6" color="text.secondary">
+                    {moment(user.data.dateUpdated).format("DD-MM-YYYY")}
+                  </span>
+                </Typography>
+              )}
             </CardContent>
           </CardActionArea>
         </Card>

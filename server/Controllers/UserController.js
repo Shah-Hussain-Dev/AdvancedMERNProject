@@ -1,5 +1,7 @@
 import userModel from "../models/userModel.js";
 import moment from "moment";
+
+//register user
 const registerUser = async (req, res) => {
   const file = req.file.filename;
   console.log(req.file);
@@ -30,7 +32,7 @@ const registerUser = async (req, res) => {
         message: "User already exist",
       });
     } else {
-      const dateCreated = moment(new Date()).format("YYYY-MM-DD");
+      const dateCreated = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
       const userData = await new userModel({
         fname,
         lname,
@@ -59,6 +61,7 @@ const registerUser = async (req, res) => {
   }
 };
 
+// get all users data
 const getAllUsers = async (req, res) => {
   const allUsers = await userModel.find();
   console.log(allUsers);
@@ -69,6 +72,7 @@ const getAllUsers = async (req, res) => {
   console.log("allUsers", allUsers);
 };
 
+//get single user data
 const getSingleUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -78,11 +82,58 @@ const getSingleUser = async (req, res) => {
       data: user,
     });
   } catch (error) {
-    // return res.status(404).json({
-    //   status: 404,
-    //   message: error.message,
-    // });
+    return res.status(404).json({
+      status: 404,
+      message: error.message,
+    });
     console.log(error.message);
   }
 };
-export { registerUser, getAllUsers, getSingleUser };
+
+const updateUser = async (req, res) => {
+  const { id } = req.params;
+  console.log(req.file);
+  const {
+    fname,
+    lname,
+    email,
+    mobile,
+    gender,
+    status,
+    location,
+    user_profile,
+  } = req.body;
+  const file = req.file ? req.file.filename : user_profile;
+  const dateUpdated = moment(new Date()).format("YYYY-MM-DD hh:mm:ss");
+
+  try {
+    const updateUserData = await userModel.findByIdAndUpdate(
+      {
+        _id: id,
+      },
+      {
+        fname,
+        lname,
+        email,
+        mobile,
+        gender,
+        status,
+        location,
+        user_profile: file,
+        dateUpdated,
+      },
+      {
+        new: true,
+      }
+    );
+    await updateUserData.save();
+    res.status(200).json(updateUser);
+  } catch (error) {
+    return res.status(404).json({
+      status: 404,
+      message: error.message,
+    });
+    console.log(error.message);
+  }
+};
+export { registerUser, getAllUsers, getSingleUser, updateUser };

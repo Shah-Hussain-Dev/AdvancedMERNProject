@@ -19,6 +19,9 @@ import SendIcon from "@mui/icons-material/Send";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Spinner from "../../components/Spinner/Spinner";
+import { useParams } from "react-router-dom";
+import { getSingleUser } from "../../services/Apis";
+import { BASE_URL } from "../../services/helper";
 const UpdateUser = () => {
   const [showSpinner, setShowSpinner] = useState(true);
   const [error, setError] = useState(false);
@@ -35,6 +38,7 @@ const UpdateUser = () => {
   });
   let message;
   const [image, setImage] = useState("");
+  const [imageData, setImageData] = useState("");
   const handleChange = (event) => {
     setUser({
       ...user,
@@ -92,7 +96,20 @@ const UpdateUser = () => {
     }
   }, [image]);
 
+  const { id } = useParams();
+
+  const getSingleUserData = async () => {
+    const response = await getSingleUser(id);
+    if (response.status === 200) {
+      setUser(response.data.data);
+      setImageData(response.data.data.user_profile);
+    } else {
+      console.log("No User found");
+    }
+  };
+
   useEffect(() => {
+    getSingleUserData();
     setTimeout(() => {
       setShowSpinner(false);
     }, 1200);
@@ -126,7 +143,7 @@ const UpdateUser = () => {
                   >
                     <FaUserEdit />
                   </IconButton>
-                  Update User
+                  Update User : {user.fname + " " + user.lname}
                 </Typography>
                 <Box>
                   <Grid container justifyContent={"center"}>
@@ -189,12 +206,14 @@ const UpdateUser = () => {
                             control={<Radio />}
                             onChange={handleChange}
                             label="Female"
+                            checked={user.gender === "female" ? true : false}
                             name="gender"
                           />
                           <FormControlLabel
                             value="male"
                             control={<Radio />}
                             label="Male"
+                            checked={user.gender === "male" ? true : false}
                             name="gender"
                             onChange={handleChange}
                           />
@@ -243,7 +262,16 @@ const UpdateUser = () => {
                           />
                         </Button>
                         <img
-                          src={preview ? preview : "../images/avatar.png"}
+                          // src={
+                          //   user.user_profile
+                          //     ? `${BASE_URL}/uploads/${user.user_profile}`
+                          //     : "../images/avatar.png"
+                          // }
+                          src={
+                            image
+                              ? preview
+                              : `${BASE_URL}/uploads/${user.user_profile}`
+                          }
                           alt="profile"
                           height="70"
                           width="70"

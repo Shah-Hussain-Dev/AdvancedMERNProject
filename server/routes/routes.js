@@ -1,5 +1,10 @@
 import express from "express";
-import { getAllUsers, getSingleUser, registerUser } from "../Controllers/UserController.js";
+import {
+  getAllUsers,
+  getSingleUser,
+  registerUser,
+  updateUser,
+} from "../Controllers/UserController.js";
 import upload from "../multer/multerConfig.js";
 // console.log(upload);
 
@@ -14,4 +19,6 @@ router.post("/user/register", upload.single("user_profile"), registerUser);
 //get single user
 router.get("/user/:id", getSingleUser);
 
+//update user
+router.put("/user/update-user/:id", upload.single("user_profile"), updateUser);
 export default router;
